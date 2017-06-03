@@ -4,12 +4,11 @@
                 maxThreads="48" minSpareThreads="10"
                 enableLookups="false" acceptCount="10" debug="0" URIEncoding="UTF-8"
                 protocol="org.apache.coyote.http11.Http11NioProtocol"
-		proxyName="localhost" proxyPort="443" scheme="https"/>
-
+		proxyName="130.211.69.83" proxyPort="443" scheme="https"/>
         <Engine name="Standalone" defaultHost="localhost" debug="0">
 
             <Host name="localhost" debug="0" appBase="webapps" unpackWARs="true" autoDeploy="false" startStopThreads="4">
-                <Context path="" docBase="../confluence" debug="0" reloadable="false" useHttpOnly="true">
+                <Context path="/confluence" docBase="../confluence" debug="0" reloadable="false" useHttpOnly="true">
                     <!-- Logger is deprecated in Tomcat 5.5. Logging configuration for Confluence is specified in confluence/WEB-INF/classes/log4j.properties -->
                     <Manager pathname="" />
                     <Valve className="org.apache.catalina.valves.StuckThreadDetectionValve" threshold="60" />
