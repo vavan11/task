@@ -1,11 +1,11 @@
 #!/bin/bash
-# echo "Provisioning virtual machine..."
+echo "Provisioning virtual machine..."
 # Add repo
 yes "" | sudo add-apt-repository ppa:ondrej/mysql-5.6
 sudo locale-gen "en_US.UTF-8"
 sudo apt-get update && sudo apt-get -y upgrade
-# install Java Zip
-sudo apt-get  -y install unzip #default-jre
+# install Zip
+sudo apt-get -y install unzip
 
 #Install nginx and defoult host
 sudo apt-get -y install nginx
@@ -13,33 +13,6 @@ sleep 3 && sudo systemctl stop nginx
 sudo rm /etc/nginx/sites-available/default
 sudo cp ~/default /etc/nginx/sites-available/default
 sudo a+r /etc/nginx/sites-available/default
-#sudo touch /etc/nginx/sites-available/default
-#sudo chmod a+w  /etc/nginx/sites-available/default
-
-#sudo echo "server {" >> /etc/nginx/sites-available/default
-#sudo echo     "listen 80;" >> /etc/nginx/sites-available/default
-#sudo echo     "listen 443 ssl;" >> /etc/nginx/sites-available/default
-#sudo echo     "server_name localhost;" >> /etc/nginx/sites-available/default
-#sudo echo " " >> /etc/nginx/sites-available/default
-#sudo echo     "ssl on;" >> /etc/nginx/sites-available/default
-#sudo echo     "ssl_certificate /etc/nginx/ssl/nginx.crt;" >> /etc/nginx/sites-available/default
-#sudo echo     "ssl_certificate_key /etc/nginx/ssl/nginx.key;" >> /etc/nginx/sites-available/default
-#sudo echo " " >> /etc/nginx/sites-available/default
-#sudo echo     "location / {" >> /etc/nginx/sites-available/default
-#sudo echo         "proxy_pass http://127.0.0.1:8090;" >> /etc/nginx/sites-available/default
-#sudo echo         "proxy_set_header Host \$host;" >> /etc/nginx/sites-available/default
-#sudo echo         "proxy_set_header X-Real-IP \$remote_addr;" >> /etc/nginx/sites-available/default
-#sudo echo         "proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;" >> /etc/nginx/sites-available/default
-#sudo echo         "proxy_set_header X-Forwarded-Proto \$scheme;" >> /etc/nginx/sites-available/default
-#sudo echo " " >> /etc/nginx/sites-available/default
-#sudo echo     "}" >> /etc/nginx/sites-available/default
-#sudo echo     "location ~ /\.ht {" >> /etc/nginx/sites-available/default
-#sudo echo                 "deny all;" >> /etc/nginx/sites-available/default
-#sudo echo     "}" >> /etc/nginx/sites-available/default
-#sudo echo  " " >> /etc/nginx/sites-available/default
-#sudo echo  "}" >> /etc/nginx/sites-available/default
-#sudo chmod a-w  /etc/nginx/sites-available/default
-#sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
 # Configuring ssl to nginx
 sudo mkdir /etc/nginx/ssl
@@ -93,40 +66,7 @@ sudo wget -P /tmp/ https://dev.mysql.com/get/Downloads/Connector-J/mysql-connect
 sudo unzip /tmp/mysql-connector-java-5.1.42.zip
 sudo cp ~/mysql-connector-java-5.1.42/mysql-connector-java-5.1.42-bin.jar /opt/atlassian/confluence/confluence/WEB-INF/lib/
 
-# Configuring a MySQL Datasource in Apache Tomcat
-#cp /opt/atlassian/confluence/conf/server.xml ~/server.xml.old
-#cp /opt/atlassian/confluence/conf/web.xml ~/web.xml.old
-#sudo chmod +w /opt/atlassian/confluence/conf/server.xml
-#sudo chmod +w /opt/atlassian/confluence/confluence/WEB-INF/web.xml
-#sudo sed -i '12a\                    <!-- If you are using Confluence 5.7 or below; change maxTotal to maxActive -->' /opt/atlassian/confluence/conf/server.xml
-#sudo sed -i '13a\                    <Resource name="jdbc/confluence" auth="Container" type="javax.sql.DataSource"' /opt/atlassian/confluence/conf/server.xml
-#sudo sed -i '14a\                        username="jirauser"' /opt/atlassian/confluence/conf/server.xml
-#sudo sed -i '15a\                        password="jirapass"' /opt/atlassian/confluence/conf/server.xml
-#sudo sed -i '16a\                        driverClassName="com.mysql.jdbc.Driver"' /opt/atlassian/confluence/conf/server.xml
-#sudo sed -i '17a\                        url="jdbc:mysql://localhost:3306/jiradb?useUnicode=true&amp;characterEncoding=utf8"' /opt/atlassian/confluence/conf/server.xml
-#sudo sed -i '18a\                        maxTotal="60"' /opt/atlassian/confluence/conf/server.xml
-#sudo sed -i '19a\                        maxIdle="20"' /opt/atlassian/confluence/conf/server.xml
-#sudo sed -i '20a\                        validationQuery="Select 1" />' /opt/atlassian/confluence/conf/server.xml
-#sudo sed -i "s/jirapass/${msqljirauserpass}/g" /opt/atlassian/confluence/conf/server.xml
-#sudo sed -i '1671a\    <resource-ref>' /opt/atlassian/confluence/confluence/WEB-INF/web.xml
-#sudo sed -i '1672a\    <description>Connection Pool</description>' /opt/atlassian/confluence/confluence/WEB-INF/web.xml
-#sudo sed -i '1673a\    <res-ref-name>jdbc/confluence</res-ref-name>' /opt/atlassian/confluence/confluence/WEB-INF/web.xml
-#sudo sed -i '1674a\    <res-type>javax.sql.DataSource</res-type>' /opt/atlassian/confluence/confluence/WEB-INF/web.xml
-#sudo sed -i '1675a\    <res-auth>Container</res-auth>' /opt/atlassian/confluence/confluence/WEB-INF/web.xml
-#sudo sed -i '1676a\    </resource-ref>' /opt/atlassian/confluence/confluence/WEB-INF/web.xml
 sudo /etc/init.d/confluence start
-
-# To run Confluence via Tomkat HTTPS
-#touch ~/msqlrootpass
-#echo "Your pass to ssl storepass" > ~/tomkatpass
-#tr -cd '[:alnum:]' < /dev/urandom | fold -w8 | head -n1 >> ~/tomkatpass
-#echo "Your pass to ssl keypass" >> ~/tomkatpass
-#tr -cd '[:alnum:]' < /dev/urandom | fold -w8 | head -n1 >> ~/tomkatpass
-#storepass=$(awk 'NR==2{print $1; exit}' ~/msqlrootpass)
-#keypass=$(awk 'NR==4{print $1; exit}' ~/msqlrootpass)
-#keytool -genkey -alias tomkat -keyalg RSA -keystore keystore.jks -dname "CN=Vova Smith, OU=Tom, O=Task, L=Cupertino, S=Lvivska, C=UA" -storepass ${storepass} -keypass ${keypass}
-
 
 sleep 5 && sudo netstat -tlpn
 cat ~/msqljirauserpass
-#sleep 2 && sudo reboot
